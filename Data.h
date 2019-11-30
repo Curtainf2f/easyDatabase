@@ -18,18 +18,20 @@ public:
 
 Data& Data::operator = (const std::string &b) {
     this->val = b;
+    return *this;
 }
 
 Data::operator int() {
     int res = 0;
-    for(int i = 0; i < val.size(); i ++) {
+    for(unsigned i = 0; i < val.size(); i ++) {
         res = res * 10 + val[i] - '0';
     }
     return res;
 }
 
 Data::operator double() {
-    int resL = 0, resR = 0, i;
+    int resL = 0, resR = 0;
+    unsigned i;
     double w = 1;
     for(i = 0; i < val.size() && val[i] != '.'; i ++) {
         resL = resL * 10 + val[i] - '0';
