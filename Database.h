@@ -57,7 +57,7 @@ bool Database::read(){
 bool Database::write(){
     if(access(folderName.c_str(), 0)){
         mkdir(folderName.c_str());
-    }
+    }else return false;
     if(access((folderName+"\\Tables").c_str(), 0)){
         mkdir((folderName+"\\Tables").c_str());
     }
