@@ -17,6 +17,7 @@ public:
     Table(std::string filename);
     Table update(Table &b, const std::string &left, const std::string &right);
     Table insert(Table &b);
+    Table insert(Row &b);
     Table _delete(Table &b);
     Table select(const std::string &left, const std::string &opt, const std::string &right);
     bool clearData();
@@ -27,6 +28,17 @@ public:
 };
 
 /* realize */
+
+Table Table::insert(Row &b){
+    Table res = *this;
+    for(unsigned j = 0; j < res.rows.size(); j ++){
+        if(b == res.rows[j]){
+            return res;
+        }
+    }
+    res.rows.push_back(b);
+    return res;
+}
 
 Table Table::insert(Table &b){
     Table res = *this;

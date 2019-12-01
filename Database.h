@@ -36,12 +36,14 @@ bool Database::bind(std::string folderName){
 }
 
 bool Database::createTable(std::string tableName){
+    if(!access((folderName + "\\Tables\\" + tableName).c_str(), 0)) return false;
     tables[tableName] = Table(folderName + "\\Tables\\" + tableName);
     return true;
 }
 
 bool Database::dropTable(std::string tableName){
     tables.erase(tableName);
+    if(access((folderName + "\\Tables\\" + tableName).c_str(), 0)) return false;
     return true;
 }
 
