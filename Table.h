@@ -96,6 +96,7 @@ Table Table::update(Table &b, const std::string &left, const std::string &right)
         for(unsigned j = 0; j < res.rows.size(); j ++){
             if(b.rows[i] == res.rows[j]){
                 res.rows[j][left].val = right;
+                b.rows[i][left].val = right;
                 break;
             }
         }
