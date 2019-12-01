@@ -17,6 +17,7 @@ public:
 };
 
 bool Database::_destory(){
+    if(access(folderName.c_str(), 0)) return false;
     system(("rd /s /q "+folderName).c_str());
     return true;
 }
