@@ -22,6 +22,7 @@ public:
     Table _delete(Table &b);
     Table leftJoin(Table &b);
     Table select(const std::string &left, const std::string &opt, const std::string &right);
+    Table select(const std::string &left, const std::string &right);
     bool clearData();
     bool read();
     bool write();
@@ -113,6 +114,15 @@ Table Table::_delete(Table &b){
                 break;
             }
         }
+    }
+    return res;
+}
+
+Table Table::select(const std::string &left, const std::string &opt, const std::string &right){
+    Table res = *this;
+    res.rows.clear();
+    for(auto &x : rows){
+        if(x[left] == x[right]) res.rows.push_back(x);
     }
     return res;
 }
