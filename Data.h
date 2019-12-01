@@ -17,6 +17,7 @@ public:
     bool operator == (Data &b);
     bool operator < (Data &b);
     bool operator > (Data &b);
+    bool operator != (Data &b);
     friend std::istream& operator >> (std::istream& input, Data& b);
     friend std::ostream& operator << (std::ostream& output, Data& b);
 };
@@ -35,6 +36,10 @@ std::istream& operator >> (std::istream& input, Data& b){
 std::ostream& operator << (std::ostream& output, Data& b){
     output << b.val;
     return output;
+}
+
+bool Data::operator != (Data &b){
+    return !((*this) == b);
 }
 
 bool Data::operator == (Data &b){

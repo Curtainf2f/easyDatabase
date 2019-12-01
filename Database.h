@@ -4,14 +4,30 @@
 class Database{
 private:
 public:
-    std::map<std::string, Table> &tables;
+    Database();
+    Database(std::string folderName);
+    std::map<std::string, Table> tables;
     std::string folderName;
     bool read();
     bool write();
+    bool _destory();
     bool createTable(std::string tableName);
     bool dropTable(std::string tableName);
     bool bind(std::string folderName);
 };
+
+bool Database::_destory(){
+    system(("rd /s /q "+folderName).c_str());
+    return true;
+}
+
+Database::Database(){
+    
+}
+
+Database::Database(std::string folderName){
+    this->folderName = folderName;
+}
 
 bool Database::bind(std::string folderName){
     this->folderName = folderName;
