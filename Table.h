@@ -19,6 +19,7 @@ public:
     Table insert(Table &b);
     Table insert(Row &b);
     Table _delete(Table &b);
+    Table leftJoin(Table &b);
     Table select(const std::string &left, const std::string &opt, const std::string &right);
     bool clearData();
     bool read();
@@ -28,6 +29,38 @@ public:
 };
 
 /* realize */
+Table Table::leftJoin(Table &b){
+    std::string t1name;
+    std::string t2name;
+    for(unsigned i = (this->fileName).size() - 1; (this->fileName)[i] != '\\'; i --){
+        t1name.push_back((this->fileName)[i]);
+    }
+    for(unsigned i = b.fileName.size() - 1; b.fileName[i] != '\\'; i --){
+        t2name.push_back(b.fileName[i]);
+    }
+    std::reverse(t1name.begin(), t1name.end());
+    std::reverse(t2name.begin(), t2name.end());
+    Table res;
+    for(auto &x : this->cols){
+        res.cols.push_back(Colume(t1name + "." + x.colName, x.type));
+    }
+    for(auto &x : b.cols){
+        res.cols.push_back(Colume(t2name + "." + x.colName, x.type));
+    }
+    Row r;
+    for(auto &x : this->rows){
+        for(auto &y : b.rows){
+            for(auto &z : this->cols){
+                r[t1name+"."+z.colName] = x[z.colName];
+            }
+            for(auto &z : this->cols){
+                r[t2name+"."+z.colName] = y[z.colName];
+            }
+            res.insert(r);
+        }
+    }
+    return res;
+}
 
 Table Table::insert(Row &b){
     Table res = *this;

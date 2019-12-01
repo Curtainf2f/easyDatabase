@@ -44,6 +44,7 @@ bool Database::createTable(std::string tableName){
 bool Database::dropTable(std::string tableName){
     tables.erase(tableName);
     if(access((folderName + "\\Tables\\" + tableName).c_str(), 0)) return false;
+    if(remove((folderName + "\\Tables\\" + tableName).c_str())) return false;
     return true;
 }
 
