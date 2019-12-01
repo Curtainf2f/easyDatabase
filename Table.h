@@ -2,6 +2,7 @@
 #include<string>
 #include<iostream>
 #include<fstream>
+#include<algorithm>
 #include"Row.h"
 #include"Colume.h"
 
@@ -32,15 +33,16 @@ public:
 Table Table::leftJoin(Table &b){
     std::string t1name;
     std::string t2name;
-    for(unsigned i = (this->fileName).size() - 1; (this->fileName)[i] != '\\'; i --){
+    for(unsigned i = (this->fileName).size() - 1; (this->fileName)[i] != '\\' && i >= 0; i --){
         t1name.push_back((this->fileName)[i]);
     }
-    for(unsigned i = b.fileName.size() - 1; b.fileName[i] != '\\'; i --){
+    for(unsigned i = b.fileName.size() - 1; b.fileName[i] != '\\' && i >= 0; i --){
         t2name.push_back(b.fileName[i]);
     }
     std::reverse(t1name.begin(), t1name.end());
     std::reverse(t2name.begin(), t2name.end());
     Table res;
+    res.bind(t1name+"+"+t2name);
     for(auto &x : this->cols){
         res.cols.push_back(Colume(t1name + "." + x.colName, x.type));
     }
@@ -53,10 +55,10 @@ Table Table::leftJoin(Table &b){
             for(auto &z : this->cols){
                 r[t1name+"."+z.colName] = x[z.colName];
             }
-            for(auto &z : this->cols){
+            for(auto &z : b.cols){
                 r[t2name+"."+z.colName] = y[z.colName];
             }
-            res.insert(r);
+            res = res.insert(r);
         }
     }
     return res;
