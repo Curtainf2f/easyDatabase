@@ -57,6 +57,7 @@ int main(){
     tb.bind("stu\\Tables\\tb");
     tc.bind("stu\\Tables\\tc");
     tc = tc.leftJoin(tb);
+    tc = tc.select("tc.aIntA", "tb.aInt");
     std::cout << "after : " << std::endl;
     for(auto &x : tc.cols){
         std::cout << x.colName << " ";
@@ -68,6 +69,7 @@ int main(){
         }
         std::cout << std::endl;
     }
+
     // Database db("newDatabase");
     // db._destory();
     // db.read();

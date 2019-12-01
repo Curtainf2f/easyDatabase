@@ -118,7 +118,7 @@ Table Table::_delete(Table &b){
     return res;
 }
 
-Table Table::select(const std::string &left, const std::string &opt, const std::string &right){
+Table Table::select(const std::string &left, const std::string &right){
     Table res = *this;
     res.rows.clear();
     for(auto &x : rows){
