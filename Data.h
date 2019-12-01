@@ -1,24 +1,117 @@
 #include<string>
+#include<stdio.h>
 #include<iostream>
-
+#include"Type.h"
 /* difined */
 
 class Data{
-private:
-    std::string val;
 public:
-    Data& operator = (const std::string &b);
-    operator int();
+    std::string val;
+    Type type;
+    Data(){}
+    Data(std::string val, Type type);
     operator double();
+    operator int();
+    bool operator <= (Data &b);
+    bool operator >= (Data &b);
+    bool operator == (Data &b);
+    bool operator < (Data &b);
+    bool operator > (Data &b);
     friend std::istream& operator >> (std::istream& input, Data& b);
     friend std::ostream& operator << (std::ostream& output, Data& b);
 };
 
 /* realize */
+Data::Data(std::string val, Type type){
+    this->val = val;
+    this->type = type;
+}
 
-Data& Data::operator = (const std::string &b) {
-    this->val = b;
-    return *this;
+std::istream& operator >> (std::istream& input, Data& b){
+    input >> b.val;
+    return input;
+}
+
+std::ostream& operator << (std::ostream& output, Data& b){
+    output << b.val;
+    return output;
+}
+
+bool Data::operator == (Data &b){
+    if(this->type == TYPE_INT){
+        int left = *this;
+        int right = b;
+        if(left == right) return true;
+        return false;
+    }else if(this->type == TYPE_DOUBLE){
+        double left = *this;
+        double right = b;
+        if(left == right) return true;
+        return false;
+    }else{
+        if(this->val == b.val) return true;
+        return false;
+    }
+}
+
+bool Data::operator <= (Data &b){
+    if(this->type == TYPE_INT){
+        int left = *this;
+        int right = b;
+        if(left <= right) return true;
+        return false;
+    }else if(this->type == TYPE_DOUBLE){
+        double left = *this;
+        double right = b;
+        if(left <= right) return true;
+        return false;
+    }
+    return false;
+}
+
+bool Data::operator >= (Data &b){
+    if(this->type == TYPE_INT){
+        int left = *this;
+        int right = b;
+        if(left >= right) return true;
+        return false;
+    }else if(this->type == TYPE_DOUBLE){
+        double left = *this;
+        double right = b;
+        if(left >= right) return true;
+        return false;
+    }
+    return false;
+}
+
+bool Data::operator > (Data &b){
+    if(this->type == TYPE_INT){
+        int left = *this;
+        int right = b;
+        if(left > right) return true;
+        return false;
+    }else if(this->type == TYPE_DOUBLE){
+        double left = *this;
+        double right = b;
+        if(left > right) return true;
+        return false;
+    }
+    return false;
+}
+
+bool Data::operator < (Data &b){
+    if(this->type == TYPE_INT){
+        int left = *this;
+        int right = b;
+        if(left < right) return true;
+        return false;
+    }else if(this->type == TYPE_DOUBLE){
+        double left = *this;
+        double right = b;
+        if(left < right) return true;
+        return false;
+    }
+    return false;
 }
 
 Data::operator int() {
@@ -41,16 +134,5 @@ Data::operator double() {
         resR = resR * 10 + val[i] - '0';
         w /= 10;
     }
-    std::cout << resR*w << std::endl;
     return resL+resR*w;
-}
-
-std::istream& operator >> (std::istream& input, Data& b){
-    input >> b.val;
-    return input;
-}
-
-std::ostream& operator << (std::ostream& output, Data& b){
-    output << b.val;
-    return output;
 }

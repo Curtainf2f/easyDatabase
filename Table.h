@@ -14,20 +14,59 @@ public:
     std::vector<Row> rows;
     std::vector<Colume> cols;
     Table();
+    Table(std::string filename);
+    Table update(Table &b, std::string &left, std::string &right)
+    Table select(const std::string &left, const std::string &opt, const std::string &right);
     bool clearData();
     bool read();
     bool write();
     bool bind(std::string fileName);
+    std::string getFileName();
 };
 
 /* realize */
+
+Table Table::select(const std::string &left, const std::string &opt, const std::string &right){
+    Table res = *this;
+    res.rows.clear();
+    Type type = TYPE_END;
+    for(auto &x : cols){
+        if(x.colName == left) type = x.type;
+    }
+    if(type == TYPE_END) return res;
+    Data rightCmp(right, type);
+    for(auto &x : rows){
+        if(opt == "="){
+            if(x[left] == rightCmp) res.rows.push_back(x);
+        }else if(opt == ">="){
+            if(x[left] >= rightCmp) res.rows.push_back(x);
+        }else if(opt == "<="){
+            if(x[left] <= rightCmp) res.rows.push_back(x);
+        }else if(opt == "<"){
+            if(x[left] < rightCmp) res.rows.push_back(x);
+        }else if(opt == ">"){
+            if(x[left] > rightCmp) res.rows.push_back(x);
+        }
+    }
+    return res;
+}
+
+std::string Table::getFileName(){
+    return fileName;
+}
+
 Table::Table(){
     fileName.clear();
+}
+
+Table::Table(std::string fileName){
+    bind(fileName);
 }
 
 bool Table::clearData(){
     rows.clear();
     cols.clear();
+    return true;
 }
 
 bool Table::read(){
@@ -44,9 +83,10 @@ bool Table::read(){
     Row r;
     int cSubs = 0;
     while (in >> dt) {
+        dt.type = cols[cSubs].type;
         r[cols[cSubs].colName] = dt;
         cSubs ++;
-        if(cSubs == cols.size()){
+        if((size_t)cSubs == cols.size()){
             rows.push_back(r);
             cSubs %= cols.size(); 
         }
